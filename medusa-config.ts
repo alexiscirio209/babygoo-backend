@@ -1,38 +1,14 @@
-import { loadEnv, defineConfig } from "@medusajs/framework/utils";
-
-loadEnv(process.env.NODE_ENV || "development", process.cwd());
+import { defineConfig } from "@medusajs/framework/utils"
 
 export default defineConfig({
-  admin: {
-    backendUrl: process.env.MEDUSA_BACKEND_URL || "http://localhost:9000",
-  },
-
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     http: {
-      storeCors: process.env.STORE_CORS!,
-      adminCors: process.env.ADMIN_CORS!,
-      authCors: process.env.AUTH_CORS!,
+      storeCors: process.env.STORE_CORS || "http://localhost:8000",
+      adminCors: process.env.ADMIN_CORS || "http://localhost:9000",
+      authCors: process.env.AUTH_CORS || "http://localhost:9000",
       jwtSecret: process.env.JWT_SECRET || "supersecret",
       cookieSecret: process.env.COOKIE_SECRET || "supersecret",
     },
   },
-
-  modules: [
-    {
-      resolve: "@medusajs/payment",
-      options: {
-        providers: [
-          {
-            id: "stripe",
-            resolve: "@medusajs/payment-stripe",
-            options: {
-              apiKey: process.env.STRIPE_API_KEY,
-              webhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
-            },
-          },
-        ],
-      },
-    },
-  ],
-});
+})
